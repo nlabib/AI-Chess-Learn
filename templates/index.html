@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Coach Chess</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero">
+        <p class="eyebrow">Local Chess Trainer</p>
+        <h1>Coach Chess</h1>
+        <p class="hero-copy">
+          Play a real game against the computer, ask for a hint when you are stuck, and
+          finish with an engine-backed review plus LM Studio coaching.
+        </p>
+      </section>
+
+      <section class="layout">
+        <div class="board-card">
+          <div class="board-header">
+            <div>
+              <h2>Board</h2>
+              <p id="status-text">Loading game state...</p>
+            </div>
+            <div class="pill-row">
+              <span class="pill" id="engine-pill">Engine</span>
+              <span class="pill" id="turn-pill">Turn</span>
+            </div>
+          </div>
+          <div class="board-wrap">
+            <div id="board" class="board" aria-label="Chess board"></div>
+          </div>
+          <p id="message-text" class="message-text"></p>
+        </div>
+
+        <aside class="sidebar">
+          <section class="panel">
+            <h2>Game Setup</h2>
+            <div class="control-grid">
+              <label>
+                <span>Your color</span>
+                <select id="color-select">
+                  <option value="white">White</option>
+                  <option value="black">Black</option>
+                </select>
+              </label>
+              <label>
+                <span>Difficulty</span>
+                <select id="difficulty-select">
+                  <option value="easy">Easy</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </label>
+            </div>
+            <button id="new-game-button" class="button primary">Start New Game</button>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Hint</h2>
+              <button id="hint-button" class="button subtle">Get Hint</button>
+            </div>
+            <div id="hint-box" class="hint-box">
+              <p>Ask for a hint when you are not sure what to play.</p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-title">
+              <h2>Moves</h2>
+              <span id="result-badge" class="result-badge">*</span>
+            </div>
+            <div id="moves-list" class="moves-list"></div>
+          </section>
+        </aside>
+      </section>
+
+      <section class="review-card">
+        <div class="panel-title">
+          <div>
+            <p class="eyebrow">Post-Game Review</p>
+            <h2>Engine Review + LM Studio Coaching</h2>
+          </div>
+          <button id="review-button" class="button primary">Analyze Game</button>
+        </div>
+
+        <div id="review-summary" class="review-summary">
+          <p>Finish a game, then run analysis to review your decisions.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+  </html>
+
