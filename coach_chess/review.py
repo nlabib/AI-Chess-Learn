@@ -44,36 +44,6 @@ def review_game(
             },
         }
 
-    if not engine_client.stockfish_available:
-        board = chess.Board()
-        for move in moves:
-            board.push(move)
-
-        player_move_count = sum(1 for index in range(len(moves)) if (index % 2 == 0) == (player_color == chess.WHITE))
-        return {
-            "result": board.result(claim_draw=True),
-            "player_color": color_name(player_color),
-            "engine_source": None,
-            "pgn": pgn_text,
-            "summary": {
-                "player_moves": player_move_count,
-                "average_centipawn_loss": 0,
-                "best_moves": 0,
-                "good_moves": 0,
-                "inaccuracies": 0,
-                "mistakes": 0,
-                "blunders": 0,
-            },
-            "items": [],
-            "notable_moves": [],
-            "llm_review": {
-                "enabled": False,
-                "model": None,
-                "summary": None,
-                "error": "Detailed review is disabled until Stockfish is installed. Gameplay still works with the built-in engine.",
-            },
-        }
-
     board = chess.Board()
     items: list[dict[str, Any]] = []
 
