@@ -64,7 +64,7 @@ def load_config() -> AppConfig:
         lm_studio_base_url=os.getenv("LM_STUDIO_BASE_URL", "http://127.0.0.1:1234/v1").rstrip("/"),
         lm_studio_model=os.getenv("LM_STUDIO_MODEL") or None,
         lm_studio_api_key=os.getenv("LM_STUDIO_API_KEY", "lm-studio"),
-        lm_studio_timeout_seconds=float(os.getenv("LM_STUDIO_TIMEOUT_SECONDS", "90")),
+        lm_studio_timeout_seconds=float(os.getenv("LM_STUDIO_TIMEOUT_SECONDS", "10")),
         review_depth=int(os.getenv("COACH_CHESS_REVIEW_DEPTH", "12")),
         allow_cors_origin=os.getenv("ALLOW_CORS_ORIGIN") or None,
     )
@@ -74,4 +74,3 @@ def get_difficulty(name: str | None) -> DifficultyProfile:
     if not name:
         return DIFFICULTIES[DEFAULT_DIFFICULTY]
     return DIFFICULTIES.get(name.lower(), DIFFICULTIES[DEFAULT_DIFFICULTY])
-

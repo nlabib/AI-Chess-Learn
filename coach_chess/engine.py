@@ -52,6 +52,8 @@ class EngineSuggestion:
 
 
 class EngineClient:
+    MAX_FALLBACK_REVIEW_DEPTH = 2
+
     def __init__(self, config: AppConfig) -> None:
         self.config = config
 
@@ -227,6 +229,10 @@ class EngineClient:
         *,
         depth: int,
     ) -> dict:
+        # Stockfish review depth can be high, but the built-in minimax must stay shallow
+        # so "Analyze Game" remains responsive when Stockfish is unavailable.
+        depth = max(1, min(depth, self.MAX_FALLBACK_REVIEW_DEPTH))
+
         if board.is_game_over(claim_draw=True):
             score = int(evaluate_position(board, perspective))
             return {
