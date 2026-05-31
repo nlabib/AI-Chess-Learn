@@ -3,6 +3,8 @@ from __future__ import annotations
 from contextlib import contextmanager
 from dataclasses import dataclass
 from math import inf
+from os import X_OK, access
+from pathlib import Path
 from typing import Iterable
 
 import chess
@@ -55,15 +57,25 @@ class EngineClient:
 
     @property
     def stockfish_available(self) -> bool:
-        return bool(self.config.stockfish_path)
+        return self._stockfish_path_is_usable()
+
+    def _stockfish_path_is_usable(self) -> bool:
+        if not self.config.stockfish_path:
+            return False
+        path = Path(self.config.stockfish_path).expanduser()
+        return path.is_file() and access(path, X_OK)
 
     @contextmanager
     def open_engine(self) -> Iterable[chess.engine.SimpleEngine | None]:
-        if not self.config.stockfish_path:
+        if not self._stockfish_path_is_usable():
             yield None
             return
 
-        engine = chess.engine.SimpleEngine.popen_uci(self.config.stockfish_path)
+        try:
+            engine = chess.engine.SimpleEngine.popen_uci(self.config.stockfish_path)
+        except (FileNotFoundError, PermissionError, OSError):
+            yield None
+            return
         try:
             yield engine
         finally:
